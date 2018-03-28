@@ -9,6 +9,7 @@ function _minify() {
 }
 
 function _mogrify() {
+    printf "... "
     mogrify \
         -strip \
         -interlace Plane \
@@ -20,23 +21,22 @@ function _mogrify() {
 }
 
 function _mogrify_until() {
-    while [ `cat "$1" | wc -c` -ge ${FILESIZE_THRESHOLD:-4000000} ]; do
+    while (( `cat "$1" | wc -c` > ${IMGSIZE:-4000000} )); do
         _mogrify "$1"
     done
 }
 
 function pic_minify() {
-    echo processing $1
+    printf "processing %s..." "$1"
     IMG="${1%.*}_minified.${1##*.}"
     _minify "$1" "$IMG" && _mogrify_until "$IMG" && mv "$IMG" "$1"
+    printf "done\n"
 }
 
 function minify_all_pics() {
-    for i in `find . \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -size +${FILESIZE_THRESHOLD:-4000000}`; do
+    for i in `find . \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -size +${IMGSIZE:-4000000}`; do
         pic_minify "$i"
-        ls -alh $i
     done
-    find . \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -size +${FILESIZE_THRESHOLD:-4000000} 2>&1
 }
 
 function full_path() {
@@ -66,12 +66,13 @@ function fail() {
 
 function comprezer() {
     ls -alh "$1" || exit
-    echo all image files inside "$1" will be compressed so its filesize less than ${FILESIZE_THRESHOLD:-4000000} bytes
+    echo all image files inside "$1" will be compressed so its filesize less than ${IMGSIZE:-4000000} bytes
     SRC=`full_path "$1"`
     D="${SRC%.*}_______compressed.${SRC##*.}"
     DST="${2:-${D}}"
     DIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
     TMP="input.xlsx"
     echo creating workspace $DIR...
-    (cp "$1" "$DIR/$TMP" && cd "$DIR" && unzip -q $TMP && rm $TMP  && minify_all_pics && zip -r "$DST" * && success || fail) && echo before: `ls -alh "$SRC"` && echo after : `ls -alh "$DST"`
+    (cp "$1" "$DIR/$TMP" && cd "$DIR" && unzip -q $TMP && rm $TMP  && minify_all_pics && zip -r "$TMP" *) && cp "$DIR/$TMP" $DST && success || fail
+    echo before: `ls -alh "$SRC"` && echo after : `ls -alh "$DST"`
 }
