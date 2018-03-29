@@ -36,7 +36,7 @@ function pic_minify() {
     IMG="${1%.*}_minified.${1##*.}"
     _minify "$1" "$IMG"; _mogrify_until "$IMG" && mv "$IMG" "$1"
     SIZE1=`_filesize "$1"`
-    printf "done (image reduced by \e[1;35m%s bytes = %s - %s\e[m)\n" $(($SIZE0 - $SIZE1)) $SIZE0 $SIZE1
+    printf "done (image reduced to \e[1;35m%s bytes = %s - %s\e[m)\n" `echo $(($SIZE0 - $SIZE1)) | _bytes` `echo $SIZE0 | _bytes` `echo $SIZE1 | _bytes`
 }
 
 function minify_all_pics() {
@@ -79,5 +79,5 @@ function comprezer() {
     (cp "$1" "$DIR/$TMP" && cd "$DIR" && unzip -q $TMP && rm $TMP  && minify_all_pics && zip -q -r "$TMP" *) && cp "$DIR/$TMP" $DST
     SIZE0=`_filesize "$SRC"`
     SIZE1=`_filesize "$DST"`
-    printf "reduced \n\t%s (%s bytes) to \n\t\e[1;35m %s (%s bytes) by %s bytes\e[m\n" "$SRC" `echo $SIZE0 | _bytes` "$DST" `echo $SIZE1 | _bytes` `echo $(($SIZE0 - $SIZE1)) | _bytes`
+    printf "reduced \n\t%s (%s bytes) to\n\t\e[1;35m %s (%s bytes) by %s bytes\e[m\n" "$SRC" `echo $SIZE0 | _bytes` "$DST" `echo $SIZE1 | _bytes` `echo $(($SIZE0 - $SIZE1)) | _bytes`
 }
