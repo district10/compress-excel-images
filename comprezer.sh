@@ -63,9 +63,13 @@ function _usage() {
     '
 }
 
+function _bytes() {
+    sed -e :a -e 's/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta'
+}
+
 function comprezer() {
     if [ -z "$1" ]; then _usage; return; fi
-    printf "all image files inside $1 will be compressed so its filesize less than \e[1;35m$(_imgsize_threshold) bytes\e[m\n"
+    printf "all image files inside $1 will be compressed so its filesize less than \e[1;35m$(_imgsize_threshold | _bytes) bytes\e[m\n"
     SRC=`full_path "$1"`
     D="${SRC%.*}_______compressed.${SRC##*.}"
     DST="${2:-${D}}"
@@ -75,5 +79,5 @@ function comprezer() {
     (cp "$1" "$DIR/$TMP" && cd "$DIR" && unzip -q $TMP && rm $TMP  && minify_all_pics && zip -q -r "$TMP" *) && cp "$DIR/$TMP" $DST
     SIZE0=`_filesize "$SRC"`
     SIZE1=`_filesize "$DST"`
-    printf "reduced \n\t%s (%s bytes) to \n\t\e[1;35m %s (%s bytes) by %s bytes\e[m\n" "$SRC" $SIZE0 "$DST" $SIZE1 $(($SIZE0 - $SIZE1))
+    printf "reduced \n\t%s (%s bytes) to \n\t\e[1;35m %s (%s bytes) by %s bytes\e[m\n" "$SRC" `echo $SIZE0 | _bytes` "$DST" `echo $SIZE1 | _bytes` `echo $(($SIZE0 - $SIZE1)) | _bytes`
 }
