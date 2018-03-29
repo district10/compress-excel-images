@@ -75,7 +75,7 @@ function comprezer() {
     DST="${2:-${D}}"
     DIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
     TMP="input.xlsx"
-    # echo creating workspace $DIR...
+    echo creating workspace $DIR...
     (cp "$1" "$DIR/$TMP" && cd "$DIR" && unzip -q $TMP && rm $TMP  && minify_all_pics && zip -q -r "$TMP" *) && cp "$DIR/$TMP" $DST
     SIZE0=`_filesize "$SRC"`
     SIZE1=`_filesize "$DST"`
