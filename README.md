@@ -9,11 +9,10 @@
 $ source comprezer.sh
 $ IMGSIZE=1,000,000; comprezer demo.xlsx output.xlsx
 all image files inside demo.xlsx will be compressed so its filesize less than 1000000 bytes
-processing xl/media/image3.jpeg... ...done (image reduced by 537606 bytes =  1358165 -   820559)
+        processing xl/media/image3.jpeg... ...done (image reduced by 537606 bytes =  1358165 -   820559)
 reduced
     /Users/zxtang/git/compress-excel-images/demo.xlsx ( 2106274 bytes) to
-    output.xlsx ( 1543716 bytes) by
-     562558 bytes
+    output.xlsx ( 1543716 bytes) by 562558 bytes
 ```
 
 ## 例子
@@ -21,40 +20,36 @@ reduced
 ```shell
 $ IMGSIZE=1,000,000; comprezer demo.xlsx demo-level-1.xlsx
 all image files inside demo.xlsx will be compressed so its filesize less than 1000000 bytes
-processing xl/media/image3.jpeg... ...done (image reduced by 537606 bytes =  1358165 -   820559)
+        processing xl/media/image3.jpeg... ...done (image reduced by 537606 bytes =  1358165 -   820559)
 reduced
     /Users/zxtang/git/compress-excel-images/demo.xlsx ( 2106274 bytes) to
-    demo-level-1.xlsx ( 1543716 bytes) by
-     562558 bytes
+    demo-level-1.xlsx ( 1543716 bytes) by 562558 bytes
 
 $ IMGSIZE=500,000; comprezer demo.xlsx demo-level-2.xlsx
 all image files inside demo.xlsx will be compressed so its filesize less than 500000 bytes
-processing xl/media/image1.jpg...done (image reduced by 59071 bytes =   522272 -   463201)
-processing xl/media/image3.jpeg... ... ... ...done (image reduced by 987490 bytes =  1358165 -   370675)
+        processing xl/media/image1.jpg...done (image reduced by 59071 bytes =   522272 -   463201)
+        processing xl/media/image3.jpeg... ... ... ...done (image reduced by 987490 bytes =  1358165 -   370675)
 reduced
     /Users/zxtang/git/compress-excel-images/demo.xlsx ( 2106274 bytes) to
-    demo-level-2.xlsx ( 1050049 bytes) by
-     1056225 bytes
+    demo-level-2.xlsx ( 1050049 bytes) by 1056225 bytes
 
 $ IMGSIZE=100,000; comprezer demo.xlsx demo-level-3.xlsx
 all image files inside demo.xlsx will be compressed so its filesize less than 100000 bytes
-processing xl/media/image1.jpg... ... ... ... ...done (image reduced by 427380 bytes =   522272 -    94892)
-processing xl/media/image2.jpg... ... ...done (image reduced by 105679 bytes =   182137 -    76458)
-processing xl/media/image3.jpeg... ... ... ... ... ... ... ...done (image reduced by 1285978 bytes =  1358165 -    72187)
+        processing xl/media/image1.jpg... ... ... ... ...done (image reduced by 427380 bytes =   522272 -    94892)
+        processing xl/media/image2.jpg... ... ...done (image reduced by 105679 bytes =   182137 -    76458)
+        processing xl/media/image3.jpeg... ... ... ... ... ... ... ...done (image reduced by 1285978 bytes =  1358165 -    72187)
 reduced
     /Users/zxtang/git/compress-excel-images/demo.xlsx ( 2106274 bytes) to
-    demo-level-3.xlsx (  285091 bytes) by
-     1821183 bytes
+    demo-level-3.xlsx (  285091 bytes) by 1821183 bytes
 
 $ IMGSIZE=10,000; comprezer demo.xlsx demo-level-4.xlsx
 all image files inside demo.xlsx will be compressed so its filesize less than 10000 bytes
-processing xl/media/image1.jpg... ... ... ... ... ... ... ... ... ... ...done (image reduced by 513327 bytes =   522272 -     8945)
-processing xl/media/image2.jpg... ... ... ... ... ... ... ... ...done (image reduced by 174442 bytes =   182137 -     7695)
-processing xl/media/image3.jpeg... ... ... ... ... ... ... ... ... ... ... ... ... ...done (image reduced by 1351017 bytes =  1358165 -     7148)
+        processing xl/media/image1.jpg... ... ... ... ... ... ... ... ... ... ...done (image reduced by 513327 bytes =   522272 -     8945)
+        processing xl/media/image2.jpg... ... ... ... ... ... ... ... ...done (image reduced by 174442 bytes =   182137 -     7695)
+        processing xl/media/image3.jpeg... ... ... ... ... ... ... ... ... ... ... ... ... ...done (image reduced by 1351017 bytes =  1358165 -     7148)
 reduced
     /Users/zxtang/git/compress-excel-images/demo.xlsx ( 2106274 bytes) to
-    demo-level-4.xlsx (   65857 bytes) by
-     2040417 bytes
+    demo-level-4.xlsx (   65857 bytes) by 2040417 bytes
 
 $ ls -alh
 total 19672
