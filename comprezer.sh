@@ -36,7 +36,7 @@ function pic_minify() {
     IMG="${1%.*}_minified.${1##*.}"
     _minify "$1" "$IMG"; _mogrify_until "$IMG" && mv "$IMG" "$1"
     SIZE1=`_filesize "$1"`
-    printf "done (image reduced to \e[1;35m%s bytes = %s - %s\e[m)\n" `echo $(($SIZE0 - $SIZE1)) | _bytes` `echo $SIZE0 | _bytes` `echo $SIZE1 | _bytes`
+    printf " done (image reduced to \e[1;35m%s bytes = %s - %s\e[m)\n" `echo $(($SIZE0 - $SIZE1)) | _bytes` `echo $SIZE0 | _bytes` `echo $SIZE1 | _bytes`
 }
 
 function minify_all_pics() {
