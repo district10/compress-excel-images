@@ -31,7 +31,7 @@ function _filesize() {
 }
 
 function pic_minify() {
-    printf "processing %s..." "$1"
+    printf "\tprocessing %s..." "$1"
     SIZE0=`_filesize "$1"`
     IMG="${1%.*}_minified.${1##*.}"
     _minify "$1" "$IMG"; _mogrify_until "$IMG" && mv "$IMG" "$1"
@@ -41,8 +41,8 @@ function pic_minify() {
 
 function minify_all_pics() {
     SZ=`_imgsize_threshold`
-    find xl/media \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \) -size +${SZ}c | while read img; do
-        pic_minify "$img"
+    find xl/media -size +${SZ}c | while read img; do
+        identify "$img" > /dev/null && pic_minify "$img"
     done
 }
 
@@ -75,5 +75,5 @@ function comprezer() {
     (cp "$1" "$DIR/$TMP" && cd "$DIR" && unzip -q $TMP && rm $TMP  && minify_all_pics && zip -q -r "$TMP" *) && cp "$DIR/$TMP" $DST
     SIZE0=`_filesize "$SRC"`
     SIZE1=`_filesize "$DST"`
-    printf "reduced \n\t%s (%s bytes) to \n\t%s (%s bytes) by \n\t\e[1;35m %s bytes\e[m\n" "$SRC" $SIZE0 "$DST" $SIZE1 $(($SIZE0 - $SIZE1))
+    printf "reduced \n\t%s (%s bytes) to \n\t\e[1;35m %s (%s bytes) by %s bytes\e[m\n" "$SRC" $SIZE0 "$DST" $SIZE1 $(($SIZE0 - $SIZE1))
 }
