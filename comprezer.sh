@@ -30,16 +30,32 @@ function _filesize() {
     cat "$1" | wc -c
 }
 
+function _torgb() {
+    identify -format "%r %f\n" "$1"
+    COLOR=`identify -format %r "$1" | sed 's/[^ ]* //'`
+    printf "\tconverting %s from colorspace %s to RGB..." "$1" "$COLOR"
+    mogrify -colorspace RGB "$1"
+    printf " done\n"
+}
+
 function pic_minify() {
     printf "\tprocessing %s..." "$1"
     SIZE0=`_filesize "$1"`
     IMG="${1%.*}_minified.${1##*.}"
     _minify "$1" "$IMG"; _mogrify_until "$IMG" && mv "$IMG" "$1"
     SIZE1=`_filesize "$1"`
-    printf "done (image reduced to \e[1;35m%s bytes = %s - %s\e[m)\n" `echo $(($SIZE0 - $SIZE1)) | _bytes` `echo $SIZE0 | _bytes` `echo $SIZE1 | _bytes`
+    printf " done (image reduced to \e[1;35m%s bytes = %s - %s\e[m)\n" `echo $(($SIZE0 - $SIZE1)) | _bytes` `echo $SIZE0 | _bytes` `echo $SIZE1 | _bytes`
 }
 
 function minify_all_pics() {
+    for i in xl/media/*; do
+        identify -format %r "$i" | grep -e '^DirectClass \(Gray\|RGB\|sRGB\)' > /dev/null || _torgb "$i"
+    done
+    identify -ping -format "%w %f\n" xl/media/* | grep -E "\d{4}" | sed  "s/^.* /xl\/media\//" 2>/dev/null | while read img; do
+        printf "\tresizing %s..." "$img"
+        mogrify -resize 1000x1000 "$img"
+        printf " done\n"
+    done
     SZ=`_imgsize_threshold`
     find xl/media -size +${SZ}c | while read img; do
         identify "$img" > /dev/null && pic_minify "$img"
